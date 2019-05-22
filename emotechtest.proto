@@ -1,0 +1,58 @@
+// Copyright 2015 gRPC authors.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "io.grpc.examples.EmoTechTest";
+option java_outer_classname = "EmoTechTestProto";
+option objc_class_prefix = "HLW";
+
+package emotechtest;
+
+// The FileTransfer service definition.
+service FileTransfer {
+  // send data to server
+  rpc DataSendRequest (DataSet) returns (StatusReply) {}
+  rpc SendFileChunk (FileDataChunk) returns (NextChunkSeqId) {}
+
+  // retrieve data from server
+  rpc DataRetrieveRequest (RequestFile) returns (DataSet) {}
+  rpc RequestFileChunk (NextChunkSeqId) returns (FileDataChunk) {}
+
+}
+
+message RequestFile {
+  string fileName = 1;
+}
+
+message DataSet {
+  int64 number = 1;
+  string text = 2;
+  string fileName = 3;
+}
+
+message FileDataChunk {
+  int64 seq = 1;
+  int64 chunkSize = 2;
+  bytes chunk = 3;
+}
+
+message NextChunkSeqId {
+  int64 seqId = 1;
+}
+
+message StatusReply {
+  string replyStatus = 1;
+}
